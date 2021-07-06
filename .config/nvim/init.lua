@@ -3,7 +3,6 @@ local vim = vim
 vim.g.mapleader = ' ' 
 
 vim.cmd[[colorscheme idlesignal]]
-vim.cmd 'let g:UltiSnipsSnippetDirectories=["UltiSnips", "snips"]'
 --vim.cmd 'au ColorScheme * hi! Normal guibg=none'
 vim.cmd 'au ColorScheme * hi! Normal guibg=NONE'
 vim.cmd 'au ColorScheme * hi! SignColumn guibg=NONE'

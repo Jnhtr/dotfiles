@@ -1,17 +1,14 @@
-" Automatically generated packer.nvim plugin loader code
+-- Automatically generated packer.nvim plugin loader code
 
-if !has('nvim-0.5')
-  echohl WarningMsg
-  echom "Invalid Neovim version for packer.nvim!"
-  echohl None
-  finish
-endif
+if vim.api.nvim_call_function('has', {'nvim-0.5'}) ~= 1 then
+  vim.api.nvim_command('echohl WarningMsg | echom "Invalid Neovim version for packer.nvim! | echohl None"')
+  return
+end
 
-packadd packer.nvim
+vim.api.nvim_command('packadd packer.nvim')
 
-try
+local no_errors = pcall(function()
 
-lua << END
   local time
   local profile_info
   local should_profile = false
@@ -72,17 +69,21 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  NERDTree = {
-    loaded = true,
-    path = "/home/john/.local/share/nvim/site/pack/packer/start/NERDTree"
-  },
   ["barbar.nvim"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/barbar.nvim"
   },
+  ["indent-blankline.nvim"] = {
+    loaded = true,
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim"
+  },
   ["lsp-status.nvim"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/lsp-status.nvim"
+  },
+  ["lspkind-nvim"] = {
+    loaded = true,
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/lspkind-nvim"
   },
   ["lualine.nvim"] = {
     loaded = true,
@@ -91,10 +92,6 @@ _G.packer_plugins = {
   nerdcommenter = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/nerdcommenter"
-  },
-  ["nerdtree-git-plugin"] = {
-    loaded = true,
-    path = "/home/john/.local/share/nvim/site/pack/packer/start/nerdtree-git-plugin"
   },
   ["nvim-compe"] = {
     loaded = true,
@@ -107,6 +104,13 @@ _G.packer_plugins = {
   ["nvim-lspinstall"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/nvim-lspinstall"
+  },
+  ["nvim-tree.lua"] = {
+    commands = { "NvimTreeToggle" },
+    config = { "\27LJ\2\n8\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\14nvim-tree\frequire\0" },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/john/.local/share/nvim/site/pack/packer/opt/nvim-tree.lua"
   },
   ["nvim-treesitter"] = {
     loaded = true,
@@ -133,10 +137,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
-  ultisnips = {
-    loaded = true,
-    path = "/home/john/.local/share/nvim/site/pack/packer/start/ultisnips"
-  },
   ["vim-jinja"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-jinja"
@@ -144,10 +144,6 @@ _G.packer_plugins = {
   ["vim-nerdtree-syntax-highlight"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-nerdtree-syntax-highlight"
-  },
-  ["vim-nerdtree-tabs"] = {
-    loaded = true,
-    path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-nerdtree-tabs"
   },
   ["vim-prettier"] = {
     loaded = true,
@@ -161,10 +157,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-sensible"
   },
-  ["vim-snippets"] = {
-    loaded = true,
-    path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-snippets"
-  },
   ["vim-surround"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-surround"
@@ -172,13 +164,16 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+
+-- Command lazy-loads
+time([[Defining lazy-load commands]], true)
+vim.cmd [[command! -nargs=* -range -bang -complete=file NvimTreeToggle lua require("packer.load")({'nvim-tree.lua'}, { cmd = "NvimTreeToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+time([[Defining lazy-load commands]], false)
+
 if should_profile then save_profiles() end
 
-END
+end)
 
-catch
-  echohl ErrorMsg
-  echom "Error in packer_compiled: " .. v:exception
-  echom "Please check your config for correctness"
-  echohl None
-endtry
+if not no_errors then
+  vim.api.nvim_command('echohl ErrorMsg | echom "Error in packer_compiled: ".v:exception | echom "Please check your config for correctness" | echohl None')
+end
