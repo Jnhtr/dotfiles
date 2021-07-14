@@ -8,7 +8,7 @@ M.keyodd = function(mode, key, result)
 end
 function ReloadConfig()
   print('Reloading config')
-  require'plenary.reload'.reload_module('cruinn')
+  require'plenary.reload'.reload_module('plugin')
 end
 function M.map_lua(mode, keys, action, options)
   if options == nil then

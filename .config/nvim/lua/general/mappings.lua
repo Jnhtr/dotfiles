@@ -1,7 +1,9 @@
 local vim = vim
-local utils = require'cruinn.utils'
+local utils = require'general/utils'
 local setup_mappings = function()
+
     --movement
+
     utils.key_mapper('i', '<up>', '<nop>')
     utils.key_mapper('i', '<down>', '<nop>')
     utils.key_mapper('i', '<left>', '<nop>')
@@ -19,11 +21,13 @@ local setup_mappings = function()
     utils.key_mapper('n', '<leader>j', ':wincmd j<CR>')
     utils.key_mapper('n', '<leader>k', ':wincmd k<CR>')
     utils.key_mapper('n', '<leader>l', ':wincmd l<CR>')
-utils.keyodd('i', '<Tab>', 'v:lua.tab_complete()')
-utils.keyodd('s', '<Tab>', 'v:lua.tab_complete()')
-utils.keyodd('i', '<S-Tab>', 'v:lua.s_tab_complete()')
-utils.keyodd('s', '<S-Tab>', 'v:lua.s_tab_complete()')
+    utils.keyodd('i', '<Tab>', 'v:lua.tab_complete()')
+    utils.keyodd('s', '<Tab>', 'v:lua.tab_complete()')
+    utils.keyodd('i', '<S-Tab>', 'v:lua.s_tab_complete()')
+    utils.keyodd('s', '<S-Tab>', 'v:lua.s_tab_complete()')
+    
     -- Tabs
+
     utils.key_mapper('n', '<leader>bn', ':BufferNext<CR>')
     utils.key_mapper('n', '<leader>bc', ':BufferClose<CR>')
     utils.key_mapper('n', '<A-1>', ':BufferGoto 1<CR>')
@@ -34,15 +38,19 @@ utils.keyodd('s', '<S-Tab>', 'v:lua.s_tab_complete()')
     utils.key_mapper('n', '<A-6>', ':BufferGoto 6<CR>')
     utils.key_mapper('n', '<A-7>', ':BufferGoto 7<CR>')
     utils.key_mapper('n', '<A-8>', ':BufferGoto 8<CR>')
+
     -- Telescope
+    
     utils.key_mapper('n', '<leader>ff', ':Telescope find_files<CR>')
     utils.key_mapper('n', '<leader>fg', ':Telescope live_grep<CR>')
+
     -- Diagnostics
+
+    utils.key_mapper('n', '<leader>fd', ':lua vim.lsp.buf.formatting()')
     utils.key_mapper('n', '<leader>dn', ':lua vim.lsp.diagnostic.goto_next()<CR>')
     utils.key_mapper('n', '<leader>dp', ':lua vim.lsp.diagnostic.goto_prev()<CR>')
     utils.key_mapper('n', '<leader>ds', ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
 end
-
 
 
 

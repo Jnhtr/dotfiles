@@ -7,7 +7,7 @@ end
 
 vim.api.nvim_command('packadd packer.nvim')
 
-local no_errors = pcall(function()
+local no_errors, error_msg = pcall(function()
 
   local time
   local profile_info
@@ -82,16 +82,18 @@ _G.packer_plugins = {
     path = "/home/john/.local/share/nvim/site/pack/packer/start/lsp-status.nvim"
   },
   ["lspkind-nvim"] = {
+    config = { "\27LJ\2\n4\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\tinit\flspkind\frequire\0" },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/john/.local/share/nvim/site/pack/packer/opt/lspkind-nvim"
+  },
+  ["lspsaga.nvim"] = {
     loaded = true,
-    path = "/home/john/.local/share/nvim/site/pack/packer/start/lspkind-nvim"
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/lspsaga.nvim"
   },
   ["lualine.nvim"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/lualine.nvim"
-  },
-  nerdcommenter = {
-    loaded = true,
-    path = "/home/john/.local/share/nvim/site/pack/packer/start/nerdcommenter"
   },
   ["nvim-compe"] = {
     loaded = true,
@@ -106,11 +108,8 @@ _G.packer_plugins = {
     path = "/home/john/.local/share/nvim/site/pack/packer/start/nvim-lspinstall"
   },
   ["nvim-tree.lua"] = {
-    commands = { "NvimTreeToggle" },
-    config = { "\27LJ\2\n8\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\vconfig\14nvim-tree\frequire\0" },
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/john/.local/share/nvim/site/pack/packer/opt/nvim-tree.lua"
+    loaded = true,
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/nvim-tree.lua"
   },
   ["nvim-treesitter"] = {
     loaded = true,
@@ -121,9 +120,8 @@ _G.packer_plugins = {
     path = "/home/john/.local/share/nvim/site/pack/packer/start/nvim-web-devicons"
   },
   ["packer.nvim"] = {
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/john/.local/share/nvim/site/pack/packer/opt/packer.nvim"
+    loaded = true,
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/packer.nvim"
   },
   ["plenary.nvim"] = {
     loaded = true,
@@ -137,17 +135,13 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
+  ["tokyonight.nvim"] = {
+    loaded = true,
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/tokyonight.nvim"
+  },
   ["vim-jinja"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-jinja"
-  },
-  ["vim-nerdtree-syntax-highlight"] = {
-    loaded = true,
-    path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-nerdtree-syntax-highlight"
-  },
-  ["vim-prettier"] = {
-    loaded = true,
-    path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-prettier"
   },
   ["vim-ripgrep"] = {
     loaded = true,
@@ -164,16 +158,17 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
-
--- Command lazy-loads
-time([[Defining lazy-load commands]], true)
-vim.cmd [[command! -nargs=* -range -bang -complete=file NvimTreeToggle lua require("packer.load")({'nvim-tree.lua'}, { cmd = "NvimTreeToggle", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-time([[Defining lazy-load commands]], false)
-
+vim.cmd [[augroup packer_load_aucmds]]
+vim.cmd [[au!]]
+  -- Event lazy-loads
+time([[Defining lazy-load event autocommands]], true)
+vim.cmd [[au BufRead * ++once lua require("packer.load")({'lspkind-nvim'}, { event = "BufRead *" }, _G.packer_plugins)]]
+time([[Defining lazy-load event autocommands]], false)
+vim.cmd("augroup END")
 if should_profile then save_profiles() end
 
 end)
 
 if not no_errors then
-  vim.api.nvim_command('echohl ErrorMsg | echom "Error in packer_compiled: ".v:exception | echom "Please check your config for correctness" | echohl None')
+  vim.api.nvim_command('echohl ErrorMsg | echom "Error in packer_compiled: '..error_msg..'" | echom "Please check your config for correctness" | echohl None')
 end

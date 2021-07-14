@@ -1,6 +1,0 @@
-require'cruinn.treesitter'
-require'cruinn.plugins'
-require'cruinn.mappings'
-require'cruinn.lsp'
-require'cruinn.lualine'
-require'cruinn.completion'

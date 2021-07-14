@@ -2,17 +2,11 @@ local vim = vim
 
 vim.g.mapleader = ' ' 
 
-vim.cmd[[colorscheme idlesignal]]
---vim.cmd 'au ColorScheme * hi! Normal guibg=none'
+vim.cmd[[colorscheme horizon]]
 vim.cmd 'au ColorScheme * hi! Normal guibg=NONE'
 vim.cmd 'au ColorScheme * hi! SignColumn guibg=NONE'
 vim.cmd 'au ColorScheme * hi! LineNr guibg=NONE'
 vim.cmd 'au ColorScheme * hi! CursorLineNr guibg=NONE'
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = true
-  }
-)
 
 local o = vim.o
 local bo = vim.bo
@@ -42,4 +36,13 @@ wo.relativenumber = true -- display relative line numbers
 wo.signcolumn = 'yes'
 wo.wrap = true 
 o.syntax = 'on'
-require'cruinn'
+require'plugins/treesitter'
+require 'plugins/saga'
+require'plugins/plugins'
+require'general/utils'
+require'general/mappings'
+require'plugins/lualine'
+require'lspconfig'
+require'lsp/lsp'
+require'plugins/completion'
+require'plugins/nvim-tree'
