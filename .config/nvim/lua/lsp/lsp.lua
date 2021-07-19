@@ -2,6 +2,12 @@ local lspconfig = require'lspconfig'
 local prettier = require 'lsp/efm.prettier'
 local eslint = require 'lsp/efm.eslint'
 -- Diagnostics
+local mapper = function(mode, key, result, opts)
+    vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
+end
+local lsp_mapper = function(mode, key, result)
+    mapper(mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
+end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -12,14 +18,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     update_in_insert = false,
   }
 )
-vim.fn.sign_define("LspDiagnosticsSignError",
-    {text = "", texthl = "GruvboxRed"})
-vim.fn.sign_define("LspDiagnosticsSignWarning",
-    {text = "", texthl = "GruvboxYellow"})
-vim.fn.sign_define("LspDiagnosticsSignInformation",
-    {text = "", texthl = "GruvboxBlue"})
-vim.fn.sign_define("LspDiagnosticsSignHint",
-    {text = "", texthl = "GruvboxAqua"})
 
 local function lsp_map(mode, left_side, right_side)
   vim.api.nvim_buf_set_keymap(0, mode, left_side, right_side, {noremap=true})           
@@ -54,24 +52,25 @@ end
 local function default_on_attach(client)
   print('Attaching to ' .. client.name)
 
-  lsp_map('n', 'gd', ':lua vim.lsp.buf.definition()<CR>')
-  lsp_map('n', 'gD', ':lua vim.lsp.buf.declaration()<CR>')
-  lsp_map('n', 'gi', ':lua vim.lsp.buf.implementation()<CR>')
-  lsp_map('n', 'gw', ':lua vim.lsp.buf.document_symbol()<CR>')
-  lsp_map('n', 'gW', ':lua vim.lsp.buf.workspace_symbol()<CR>')
-  lsp_map('n', 'gr', ':lua vim.lsp.buf.references()<CR>')
-  lsp_map('n', 'gt', ':lua vim.lsp.buf.type_definition()<CR>')
-  lsp_map('n', 'K', ':lua vim.lsp.buf.hover()<CR>')
-  lsp_map('n', '<c-k>', ':lua vim.lsp.buf.signature_help()<CR>')
-  lsp_map('n', '<leader>af', ':lua vim.lsp.buf.code_action()<CR>')
-  lsp_map('n', '<leader>rn', ':lua vim.lsp.buf.rename()<CR>')
+     -- LSP mappings (only apply when LSP client attached)
+    lsp_mapper("n" , "K"         , "require('lspsaga.hover').render_hover_doc()")
+    lsp_mapper("n" , "<space>da" , "require'lspsaga.provider'.preview_definition()")
+    lsp_mapper("n" , "gR"        , "vim.lsp.buf.references()")
+    lsp_mapper("n" , "gr"        , "require('lspsaga.rename').rename()")
+    lsp_mapper("n" , "H"         , "require('lspsaga.codeaction').code_action()")
+    lsp_mapper("n" , "gin"       , "vim.lsp.buf.incoming_calls()")
+    lsp_mapper("n" , "<space>dn" , "require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()")
+    lsp_mapper("n" , "<space>dp" , "require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()")
+    lsp_mapper("n" , "<space>ds" , "require'lspsaga.diagnostic'.show_line_diagnostics()")
+    lsp_mapper("i" , "<C-h>"     , "require('lspsaga.signaturehelp').signature_help()")
+    lsp_mapper("n" , "<C-q>"     , "vim.lsp.stop_client(vim.lsp.buf_get_clients(0))")
 end
 
 local default_config = {
   on_attach = default_on_attach,
 }
 lspconfig.efm.setup {
-    on_attach = on_attach,
+    on_attach = default_on_attach,
     init_options = {documentFormatting = true},
     settings = {
         rootMarkers = {".git/"},
@@ -80,6 +79,7 @@ lspconfig.efm.setup {
             javascript = {prettier, eslint},
             typescriptreact = {prettier, eslint},
             javascriptreact = {prettier, eslint},
+            javascriptvue = {prettier, eslint},
             yaml = {prettier},
             json = {prettier},
             html = {prettier},
@@ -94,7 +94,35 @@ local sumneko_root_path = vim.fn.stdpath('config')..'/lua/lua-language-server/'
 local sumneko_binary = sumneko_root_path.."/bin/"..'Linux'.."/lua-language-server"
 -- Language Servers
 lspconfig.pyls.setup(default_config)
-lspconfig.vuels.setup(default_config)
+lspconfig.vuels.setup({
+on_attach = default_on_attach,
+init_options = {documentFormatting = true},
+
+    settings = {
+        vetur = {
+            completion = {
+                autoImport = true,
+                tagCasing = "kebab",
+                useScaffoldSnippets = true,
+            },
+            useWorkspaceDependencies = true,
+        },
+        format = {
+            enable = true,
+            options = {
+                useTabs = false,
+                tabSize = 2,
+            },
+        },
+        validation = {
+            template = true,
+            script = true,
+            style = true,
+            templateProps = true,
+            interpolation = true
+        },
+    },
+})
 lspconfig.bashls.setup(default_config)
 lspconfig.cssls.setup(default_config)
 lspconfig.dockerls.setup(default_config)

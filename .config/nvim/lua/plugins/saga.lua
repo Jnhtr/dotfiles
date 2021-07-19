@@ -2,7 +2,13 @@ local saga = require 'lspsaga'
 
 
 saga.init_lsp_saga {
-  code_action_icon = '💡',
+ use_saga_diagnostic_sign = true,
+ code_action_icon = 'ﯦ',
+ error_sign = '',
+ warn_sign = '',
+ hint_sign = '',
+ infor_sign = '',
+ dianostic_header_icon = '   ',
   code_action_prompt = {
     enable        = true,
     sign          = true,

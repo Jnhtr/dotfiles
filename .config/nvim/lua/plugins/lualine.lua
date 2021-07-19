@@ -2,8 +2,9 @@ require'lualine'.setup {
   options = {
     icons_enabled = true,
     theme = 'horizon',
-    component_separators = {'|', '|'},
-    section_separators = {'', ''},
+
+    component_separators = {'\u{e0bd}', '\u{E0bb}'},
+    section_separators = {'\u{e0bc}', '\u{E0ba}'},
     disabled_filetypes = {}
   },
   sections = {

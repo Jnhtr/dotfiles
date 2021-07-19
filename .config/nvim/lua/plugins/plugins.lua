@@ -23,6 +23,7 @@ use 'ntk148v/vim-horizon'
 	use 'nvim-lua/lsp-status.nvim'
     use "kabouzeid/nvim-lspinstall"
     use 'romgrk/barbar.nvim'
+use 'windwp/nvim-autopairs'
     use 'lepture/vim-jinja'
 	use 'nvim-lua/popup.nvim'
     use 'hrsh7th/nvim-compe'

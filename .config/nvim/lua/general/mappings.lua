@@ -43,15 +43,7 @@ local setup_mappings = function()
     
     utils.key_mapper('n', '<leader>ff', ':Telescope find_files<CR>')
     utils.key_mapper('n', '<leader>fg', ':Telescope live_grep<CR>')
-
-    -- Diagnostics
-
-    utils.key_mapper('n', '<leader>fd', ':lua vim.lsp.buf.formatting()')
-    utils.key_mapper('n', '<leader>dn', ':lua vim.lsp.diagnostic.goto_next()<CR>')
-    utils.key_mapper('n', '<leader>dp', ':lua vim.lsp.diagnostic.goto_prev()<CR>')
-    utils.key_mapper('n', '<leader>ds', ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>')
-end
-
+end 
 
 
 setup_mappings()
