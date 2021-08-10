@@ -5,17 +5,27 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
-
+local gears = require('gears')
 local gfs = require("gears.filesystem")
+local lain  = require("lain")
+local awful = require("awful")
+local wibox = require("wibox")
+local dpi   = require("beautiful.xresources").apply_dpi
+
+local os = os
+local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 themes_path = os.getenv("HOME") .. "/.config/awesome/idlesignal"
 local theme = {}
 
-theme.font          = "Tex Gype Heros Regular 10"
+theme.font = "JetBrainsMonoMedium Nerd Font 10"
+theme.icon_font = "JetBrainsMonoMedium Nerd Font 12"
+theme.taglist_font = "JetBrainsMonoMedium Nerd Font 8"
 
 theme.bg_normal     = "#16161C"
 theme.bg_focus      = "#F43E5C"
 theme.bg_urgent     = "#FAB28E"
 theme.bg_minimize   = "#1A1C23"
+theme.music_icon_color = "#F43E5C"
 theme.bg_systray    = theme.bg_normal
 
 theme.fg_normal     = "#aaaaaa"
@@ -23,8 +33,10 @@ theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
-theme.useless_gap   = 10
+theme.useless_gap   = 8
 theme.border_width  = dpi(0)
+theme.widget_spacing = dpi(5)
+theme.tasklist_spacing = dpi(10)
 theme.border_normal = "#000000"
 theme.border_focus  = "#535d6c"
 theme.border_marked = "#91231c"
@@ -43,7 +55,7 @@ theme.border_marked = "#91231c"
 --theme.taglist_bg_focus = "#ff0000"
 
 -- Generate taglist squares:
-local taglist_square_size = dpi(4)
+local taglist_square_size = dpi(2)
 theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
     taglist_square_size, theme.fg_normal
 )
@@ -61,9 +73,8 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = themes_path.."default/submenu.png"
-theme.menu_height = dpi(15)
+theme.menu_height = dpi(20)
 theme.menu_width  = dpi(100)
-
 -- You can add as many variables as
 -- you wish and access them by using
 -- beautiful.variable in your rc.lua
@@ -96,34 +107,27 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = themes_path.. "/backgrounds/tri.jpg"
+
+theme.wallpaper = themes_path.. "/backgrounds/tri2.jpg"
 
 -- You can use your own layout icons like this:
-theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
-theme.layout_fairv = themes_path.."default/layouts/fairvw.png"
 theme.layout_floating  = themes_path.."default/layouts/floatingw.png"
-theme.layout_magnifier = themes_path.."default/layouts/magnifierw.png"
 theme.layout_max = themes_path.."default/layouts/maxw.png"
-theme.layout_fullscreen = themes_path.."default/layouts/fullscreenw.png"
-theme.layout_tilebottom = themes_path.."default/layouts/tilebottomw.png"
-theme.layout_tileleft   = themes_path.."default/layouts/tileleftw.png"
-theme.layout_tile = themes_path.."default/layouts/tilew.png"
-theme.layout_tiletop = themes_path.."default/layouts/tiletopw.png"
-theme.layout_spiral  = themes_path.."default/layouts/spiralw.png"
-theme.layout_dwindle = themes_path.."default/layouts/dwindlew.png"
-theme.layout_cornernw = themes_path.."default/layouts/cornernww.png"
-theme.layout_cornerne = themes_path.."default/layouts/cornernew.png"
-theme.layout_cornersw = themes_path.."default/layouts/cornersww.png"
-theme.layout_cornerse = themes_path.."default/layouts/cornersew.png"
+theme.layout_fullscreen = themes_path.."/icons/full.png"
+theme.layout_termfair = themes_path.."/icons/termfair.png"
+theme.layout_tile = themes_path.."/icons/tile.png"
 
--- Generate Awesome icon:
-theme.awesome_icon = theme_assets.awesome_icon(
-    theme.menu_height, theme.bg_focus, theme.fg_focus
-)
-
+theme.music_icon = ""
+theme.screenshot_icon = themes_path.. "/icons/screenshot.png"
+theme.notification_border_width = 0
+theme.notification_bg = theme.bg_normal
+theme.notification_border_color = theme.bg_normal
+theme.notification_width = dpi(400)
+theme.notification_max_width = dpi(600)
+theme.notification_padding = dpi(45)
+theme.notification_spacing = dpi(8)
 -- Define the icon theme for application icons. If not set then the icons
 -- from /usr/share/icons and /usr/share/icons/hicolor will be used.
-theme.icon_theme = nil
 
 return theme
 

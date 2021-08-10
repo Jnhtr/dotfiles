@@ -5,10 +5,14 @@ pcall(require, "luarocks.loader")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+local screenshot =("bash /home/scripts/idleshot.sh &")
 require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
+local lain = require("lain")
 -- Theme handling library
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+local mpd = require('idlesignal.widgets.mpd')
 local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
@@ -17,7 +21,21 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+local dpi = require('beautiful').xresources.apply_dpi
 
+-- Naughty presets
+naughty.config.padding = 8
+naughty.config.spacing = 8
+
+naughty.config.defaults.timeout = 5
+naughty.config.defaults.position = 'top_right'
+naughty.config.defaults.margin = dpi(16)
+naughty.config.defaults.ontop = true
+naughty.config.defaults.font = beautiful.font
+naughty.config.defaults.icon_size = dpi(32)
+naughty.config.defaults.shape = gears.shape.rectangle
+naughty.config.defaults.border_width = dpi(0)
+naughty.config.defaults.hover_timeout = nil
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -65,20 +83,8 @@ modkey = "Mod4"
 awful.layout.layouts = {
     awful.layout.suit.tile,
     awful.layout.suit.floating,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
-    awful.layout.suit.corner.nw,
-    -- awful.layout.suit.corner.ne,
-    -- awful.layout.suit.corner.sw,
-    -- awful.layout.suit.corner.se,
+    lain.layout.termfair,
 }
 -- }}}
 
@@ -171,7 +177,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag({ "⭘ ", "⭘ ", "⭘ ", "⭘ ", "⭘ "}, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -196,18 +202,8 @@ s.mytasklist = awful.widget.tasklist {
     filter   = awful.widget.tasklist.filter.currenttags,
     buttons  = tasklist_buttons,
     layout   = {
-        spacing_widget = {
-            {
-                forced_width  = 1,
-                thickness     = 1,
-                color         = '#2E303E',
-                widget        = wibox.widget.separator
-            },
-            valign = 'center',
-            halign = 'center',
-            widget = wibox.container.place,
-        },
-        spacing = 5,
+        spacing = 15,
+max_widget_size = awful.screen.focused().workarea.width * 0.12,
         layout  = wibox.layout.flex.horizontal
     },
     -- Notice that there is *NO* wibox.wibox prefix, it is a template,
@@ -221,7 +217,7 @@ s.mytasklist = awful.widget.tasklist {
 		                {
                     id     = 'text_role',
                     widget = wibox.widget.textbox,
-		    forced_height = 29,
+		    forced_height = 28,
                 },
                 layout = wibox.layout.fixed.horizontal,
             },
@@ -238,7 +234,8 @@ s.mytasklist = awful.widget.tasklist {
     -- Create the wibox
     s.mywibox = awful.wibar({
         position = "top",
-	height = 31,
+        type = "dock",
+	height = 30,
         screen = s,
         bg = beautiful.bg_normal
     })
@@ -256,9 +253,18 @@ s.mytasklist = awful.widget.tasklist {
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            wibox.widget.systray(),
+
+spacing = beautiful.widget_spacing,
+            mpd,
+volume_widget{
+            widget_type = 'horizontal_bar',
+            shape = 'rounded_bar',
+            margins = '13'
+        },
+
             mytextclock,
-            s.mylayoutbox,
+wibox.layout.margin(wibox.widget.systray(), 5, 5, 5, 5),
+wibox.layout.margin(s.mylayoutbox, 5, 5, 5, 5),
         },
     }
 end)
@@ -298,8 +304,14 @@ globalkeys = gears.table.join(
     -- Layout manipulation
     awful.key({modkey,}, "s",
 			function ()
-			io.popen("bash ~/scripts/idleshot.sh &")
-		end),
+awful.spawn.easy_async_with_shell("sh ~/scripts/idleshot.sh &", function(stdout, stderr, reason, exit_code)
+
+    naughty.notify { 
+title = "Screnshot",
+icon = beautiful.screenshot_icon,
+        text = stdout }
+end)
+end),
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
