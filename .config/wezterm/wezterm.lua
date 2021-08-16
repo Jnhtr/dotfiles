@@ -2,6 +2,7 @@ local wezterm = require 'wezterm';
 return {
   window_decorations = "NONE",
   enable_tab_bar = false,
+  font = wezterm.font("JetBrainsMono Nerd Font"),
   window_padding = {
       left = 5,
       right = 5,

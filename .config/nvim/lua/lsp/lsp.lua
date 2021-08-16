@@ -1,3 +1,5 @@
+vim.schedule(function()
+require("packer").loader("coq_nvim coq.artifacts")
 local lspconfig = require'lspconfig'
 local prettier = require 'lsp/efm.prettier'
 local eslint = require 'lsp/efm.eslint'
@@ -69,7 +71,7 @@ end
 local default_config = {
   on_attach = default_on_attach,
 }
-lspconfig.efm.setup {
+lspconfig.efm.setup({
     on_attach = default_on_attach,
     init_options = {documentFormatting = true},
     settings = {
@@ -88,13 +90,12 @@ lspconfig.efm.setup {
             markdown = {prettier},
         }
     }
-}
+})
 local pid = vim.fn.getpid()
 local sumneko_root_path = vim.fn.stdpath('config')..'/lua/lua-language-server/'
 local sumneko_binary = sumneko_root_path.."/bin/"..'Linux'.."/lua-language-server"
 -- Language Servers
-lspconfig.pyls.setup(default_config)
-lspconfig.vuels.setup({
+lspconfig.vuels.setup(require("coq")().lsp_ensure_capabilities({
 on_attach = default_on_attach,
 init_options = {documentFormatting = true},
 
@@ -122,20 +123,17 @@ init_options = {documentFormatting = true},
             interpolation = true
         },
     },
-})
+}))
 lspconfig.bashls.setup(default_config)
 lspconfig.cssls.setup(default_config)
 lspconfig.dockerls.setup(default_config)
 lspconfig.html.setup(default_config)
 lspconfig.jsonls.setup(default_config)
-lspconfig.denols.setup{on_attach = disableFormat}
+lspconfig.denols.setup(require("coq")().lsp_ensure_capabilities({on_attach = disableFormat}))
 lspconfig.graphql.setup(default_config)
-lspconfig.tsserver.setup{on_attach = disableFormat}
+lspconfig.tsserver.setup(require("coq")().lsp_ensure_capabilities({on_attach = disableFormat}))
 lspconfig.rust_analyzer.setup(default_config)
-lspconfig.zeta_note.setup({
-	cmd = {'~.local/bin/zeta-note'}
-})
-lspconfig.sumneko_lua.setup({
+lspconfig.sumneko_lua.setup(require("coq")().lsp_ensure_capabilities({
     cmd = {sumneko_binary, "-E", sumneko_root_path .. '/main.lua'},
     on_attach = default_on_attach,
     settings = {
@@ -155,6 +153,7 @@ lspconfig.sumneko_lua.setup({
         }
       }
     }
-})
+}))
 lspconfig.vimls.setup(default_config)
 lspconfig.yamlls.setup(default_config)
+end)

@@ -11,7 +11,7 @@ use 'ntk148v/vim-horizon'
 	use 'jremmen/vim-ripgrep'
 	use 'tpope/vim-sensible'
 	use 'tpope/vim-surround'
-	use 'neovim/nvim-lspconfig'
+	use  {'neovim/nvim-lspconfig'}
     use {
             "onsails/lspkind-nvim",
             event = "BufRead",
@@ -21,6 +21,8 @@ use 'ntk148v/vim-horizon'
         }
     use "glepnir/lspsaga.nvim"
 	use 'nvim-lua/lsp-status.nvim'
+    use {'ms-jpq/coq_nvim'}
+use 'ms-jpq/coq.artifacts'
     use "kabouzeid/nvim-lspinstall"
     use 'romgrk/barbar.nvim'
 use 'windwp/nvim-autopairs'

@@ -73,6 +73,14 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/barbar.nvim"
   },
+  ["coq.artifacts"] = {
+    loaded = true,
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/coq.artifacts"
+  },
+  coq_nvim = {
+    loaded = true,
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/coq_nvim"
+  },
   ["indent-blankline.nvim"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim"
@@ -94,6 +102,10 @@ _G.packer_plugins = {
   ["lualine.nvim"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/lualine.nvim"
+  },
+  ["nvim-autopairs"] = {
+    loaded = true,
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/nvim-autopairs"
   },
   ["nvim-compe"] = {
     loaded = true,
@@ -138,6 +150,10 @@ _G.packer_plugins = {
   ["tokyonight.nvim"] = {
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/tokyonight.nvim"
+  },
+  ["vim-horizon"] = {
+    loaded = true,
+    path = "/home/john/.local/share/nvim/site/pack/packer/start/vim-horizon"
   },
   ["vim-jinja"] = {
     loaded = true,
