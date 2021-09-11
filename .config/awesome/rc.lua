@@ -11,7 +11,6 @@ require("awful.autofocus")
 local wibox = require("wibox")
 local lain = require("lain")
 -- Theme handling library
-local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 local mpd = require('idlesignal.widgets.mpd')
 local beautiful = require("beautiful")
 -- Notification library
@@ -68,7 +67,7 @@ home             = os.getenv("HOME")
 confdir          = home .. "/.config/awesome"
 active_theme     = confdir.. "/idlesignal"
 beautiful.init(active_theme .. "/theme.lua")
-terminal = "alacritty"
+terminal = "wezterm"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -256,12 +255,6 @@ max_widget_size = awful.screen.focused().workarea.width * 0.12,
 
 spacing = beautiful.widget_spacing,
             mpd,
-volume_widget{
-            widget_type = 'horizontal_bar',
-            shape = 'rounded_bar',
-            margins = '13'
-        },
-
             mytextclock,
 wibox.layout.margin(wibox.widget.systray(), 5, 5, 5, 5),
 wibox.layout.margin(s.mylayoutbox, 5, 5, 5, 5),
@@ -307,7 +300,7 @@ globalkeys = gears.table.join(
 awful.spawn.easy_async_with_shell("sh ~/scripts/idleshot.sh &", function(stdout, stderr, reason, exit_code)
 
     naughty.notify { 
-title = "Screnshot",
+title = "Screenshot",
 icon = beautiful.screenshot_icon,
         text = stdout }
 end)

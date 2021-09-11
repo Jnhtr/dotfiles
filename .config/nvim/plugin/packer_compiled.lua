@@ -78,6 +78,7 @@ _G.packer_plugins = {
     path = "/home/john/.local/share/nvim/site/pack/packer/start/coq.artifacts"
   },
   coq_nvim = {
+    config = { "\27LJ\2\nD\0\0\2\0\4\0\0056\0\0\0009\0\1\0005\1\3\0=\1\2\0K\0\1\0\1\0\1\15auto_start\fshut-up\17coq_settings\6g\bvim\0" },
     loaded = true,
     path = "/home/john/.local/share/nvim/site/pack/packer/start/coq_nvim"
   },
@@ -174,6 +175,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: coq_nvim
+time([[Config for coq_nvim]], true)
+try_loadstring("\27LJ\2\nD\0\0\2\0\4\0\0056\0\0\0009\0\1\0005\1\3\0=\1\2\0K\0\1\0\1\0\1\15auto_start\fshut-up\17coq_settings\6g\bvim\0", "config", "coq_nvim")
+time([[Config for coq_nvim]], false)
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Event lazy-loads

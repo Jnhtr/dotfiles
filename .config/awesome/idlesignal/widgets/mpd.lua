@@ -10,7 +10,7 @@ local mpd = lain.widget.mpd({
 
         local header = " "
         local status = "契 "
-        local artist = " " .. mpd_now.name.. " "
+        local artist = " " .. mpd_now.artist.. " "
         local title  = mpd_now.title
         local sep = "- "
 

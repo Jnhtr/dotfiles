@@ -21,7 +21,13 @@ use 'ntk148v/vim-horizon'
         }
     use "glepnir/lspsaga.nvim"
 	use 'nvim-lua/lsp-status.nvim'
-    use {'ms-jpq/coq_nvim'}
+    use {'ms-jpq/coq_nvim',
+ config = function()
+      vim.g.coq_settings = {
+        auto_start = 'shut-up',
+      }
+    end,
+}
 use 'ms-jpq/coq.artifacts'
     use "kabouzeid/nvim-lspinstall"
     use 'romgrk/barbar.nvim'

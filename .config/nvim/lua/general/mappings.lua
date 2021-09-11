@@ -23,8 +23,6 @@ local setup_mappings = function()
     utils.key_mapper('n', '<leader>l', ':wincmd l<CR>')
     utils.keyodd('i', '<Tab>', 'v:lua.tab_complete()')
     utils.keyodd('s', '<Tab>', 'v:lua.tab_complete()')
-    utils.keyodd('i', '<S-Tab>', 'v:lua.s_tab_complete()')
-    utils.keyodd('s', '<S-Tab>', 'v:lua.s_tab_complete()')
     
     -- Tabs
 

@@ -1,13 +1,13 @@
 local vim = vim
-
+vim.cmd 'highlight LspDiagnosticsUnderlineError guisp=#db4b4b gui=undercurl,bold  cterm=bold,undercurl'
 vim.g.mapleader = ' ' 
-
 vim.cmd[[colorscheme horizon]]
 vim.cmd 'au ColorScheme * hi! Normal guibg=NONE'
 vim.cmd 'au ColorScheme * hi! SignColumn guibg=NONE'
 vim.cmd 'au ColorScheme * hi! LineNr guibg=NONE'
 vim.cmd 'au ColorScheme * hi! CursorLineNr guibg=NONE'
 local o = vim.o
+local g = vim.g
 local bo = vim.bo
 local wo = vim.wo
 o.termguicolors = true

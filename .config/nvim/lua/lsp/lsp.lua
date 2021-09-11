@@ -1,8 +1,7 @@
-vim.schedule(function()
-require("packer").loader("coq_nvim coq.artifacts")
 local lspconfig = require'lspconfig'
 local prettier = require 'lsp/efm.prettier'
 local eslint = require 'lsp/efm.eslint'
+local coq = require 'coq'
 -- Diagnostics
 local mapper = function(mode, key, result, opts)
     vim.api.nvim_buf_set_keymap(0, mode, key, result, opts)
@@ -20,6 +19,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     update_in_insert = false,
   }
 )
+local disableFormat = function(client)
+    client.resolved_capabilities.document_formatting = false
+end
 
 local function lsp_map(mode, left_side, right_side)
   vim.api.nvim_buf_set_keymap(0, mode, left_side, right_side, {noremap=true})           
@@ -34,26 +36,15 @@ local format_async = function(err, _, result, _, bufnr)
     end
 end
 
-local function on_attach(client)
-    vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
-
-    if client.resolved_capabilities.document_formatting then
-        vim.api.nvim_exec([[
-         augroup LspAutocommands
-             autocmd! * <buffer>
-             autocmd BufWritePost <buffer> LspFormatting
-         augroup END
-         ]], true)
-    end
-end
-
-local disableFormat = function(client)
-    client.resolved_capabilities.document_formatting = false
-    on_attach(client)
-end
 local function default_on_attach(client)
   print('Attaching to ' .. client.name)
 
+    if client.resolved_capabilities.document_formatting then
+        vim.api.nvim_command [[augroup Format]]
+        vim.api.nvim_command [[autocmd! * <buffer>]]
+        vim.api.nvim_command [[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()]]
+        vim.api.nvim_command [[augroup END]]
+    end
      -- LSP mappings (only apply when LSP client attached)
     lsp_mapper("n" , "K"         , "require('lspsaga.hover').render_hover_doc()")
     lsp_mapper("n" , "<space>da" , "require'lspsaga.provider'.preview_definition()")
@@ -71,11 +62,28 @@ end
 local default_config = {
   on_attach = default_on_attach,
 }
-lspconfig.efm.setup({
+lspconfig.efm.setup(coq.lsp_ensure_capabilities({
     on_attach = default_on_attach,
+       filetypes = {
+            'python',
+            'lua',
+            'yaml',
+            'json',
+            'markdown',
+            'rst',
+            'html',
+            'css',
+            'vue',
+            'javascript',
+            'typescript',
+            'javascriptreact',
+            'typescriptreact',
+            'bash',
+            'sh',
+        },
     init_options = {documentFormatting = true},
     settings = {
-        rootMarkers = {".git/"},
+        rootMarkers = {"package.json", ".git/"},
         languages = {
             typescript = {prettier, eslint},
             javascript = {prettier, eslint},
@@ -85,17 +93,18 @@ lspconfig.efm.setup({
             yaml = {prettier},
             json = {prettier},
             html = {prettier},
+            vue = {prettier},
             scss = {prettier},
             css = {prettier},
             markdown = {prettier},
         }
     }
-})
+}))
 local pid = vim.fn.getpid()
-local sumneko_root_path = vim.fn.stdpath('config')..'/lua/lua-language-server/'
-local sumneko_binary = sumneko_root_path.."/bin/"..'Linux'.."/lua-language-server"
+local sumneko_root_path = vim.fn.stdpath('config')..'/lua'
+local sumneko_binary = sumneko_root_path.."lua-language-server"
 -- Language Servers
-lspconfig.vuels.setup(require("coq")().lsp_ensure_capabilities({
+lspconfig.vuels.setup(coq.lsp_ensure_capabilities({
 on_attach = default_on_attach,
 init_options = {documentFormatting = true},
 
@@ -129,11 +138,11 @@ lspconfig.cssls.setup(default_config)
 lspconfig.dockerls.setup(default_config)
 lspconfig.html.setup(default_config)
 lspconfig.jsonls.setup(default_config)
-lspconfig.denols.setup(require("coq")().lsp_ensure_capabilities({on_attach = disableFormat}))
+lspconfig.denols.setup(coq.lsp_ensure_capabilities({on_attach = disableFormat}))
 lspconfig.graphql.setup(default_config)
-lspconfig.tsserver.setup(require("coq")().lsp_ensure_capabilities({on_attach = disableFormat}))
+lspconfig.tsserver.setup(coq.lsp_ensure_capabilities({on_attach = disableFormat}))
 lspconfig.rust_analyzer.setup(default_config)
-lspconfig.sumneko_lua.setup(require("coq")().lsp_ensure_capabilities({
+lspconfig.sumneko_lua.setup(coq.lsp_ensure_capabilities({
     cmd = {sumneko_binary, "-E", sumneko_root_path .. '/main.lua'},
     on_attach = default_on_attach,
     settings = {
@@ -156,4 +165,4 @@ lspconfig.sumneko_lua.setup(require("coq")().lsp_ensure_capabilities({
 }))
 lspconfig.vimls.setup(default_config)
 lspconfig.yamlls.setup(default_config)
-end)
+
